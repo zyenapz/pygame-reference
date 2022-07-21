@@ -6,16 +6,16 @@ import pygame
 import math
 from PIL import Image, ImageDraw
 
-# Game variables
+# Game variables ------------------------------------------------
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Dot Product Demonstration")
 is_running = True
 clock = pygame.time.Clock()
 FPS = 60
-my_font = pygame.font.SysFont('Comic Sans MS', 16)
+font = pygame.font.SysFont('Comic Sans MS', 16)
 
-# Actor class
+# Actor class ------------------------------------------------
 
 
 class Actor:
@@ -32,7 +32,7 @@ class Actor:
         if self.other != None:
             pygame.draw.line(screen, "white", self.pos, self.other.pos)
 
-# Some maths
+# Some maths ------------------------------------------------
 
 
 def normalize(val, mincap, maxcap):
@@ -54,7 +54,7 @@ def clip(val, mincap, maxcap):
     return val
 
 
-# Visibility constants
+# Visibility constants ------------------------------------------------
 VISIBLE_THRESHOLD = 0.7
 VISIBLE_DISTANCE = 120
 
@@ -63,11 +63,12 @@ VISIBLE_DISTANCE = 120
 # ... This has the consequence of the cone appearing "larger" than the actual threshold
 CONE_ALPHA = 18
 
-# Create actors
+# Create actors ------------------------------------------------
 cursor = Actor(50, 50, "yellow", None, 5)
 alice = Actor(300, 200, "green", None)
-# Bob's viewing direction is towards the cursor's position
+# Note: Bob's viewing direction is towards the cursor's position
 bob = Actor(300, 150, "red", cursor)
+
 
 while is_running:
 
@@ -104,16 +105,14 @@ while is_running:
     m_pos = pygame.Vector2(m_pos[0], m_pos[1])
 
     # Update -----------------------------------------------
-    try:  # Lazy fix for calculating dot product using 0
-        cursor.pos = m_pos
-        bob_cursor = (bob.pos - cursor.pos).normalize()  # bob-cursor vector
-        bob_alice = (bob.pos - alice.pos).normalize()  # bob-alice vector
-        dot_product = bob_cursor.dot(bob_alice)
-        dist_bob_alice = bob.pos.distance_to(alice.pos)
-    except:
-        pass
+    # --- Calculate dot product and distance
+    cursor.pos = m_pos
+    bob_cursor = (bob.pos - cursor.pos).normalize()  # Bob-cursor vector
+    bob_alice = (bob.pos - alice.pos).normalize()  # Bob-Alice vector
+    dot_product = bob_cursor.dot(bob_alice)
+    dist_bob_alice = bob.pos.distance_to(alice.pos)
 
-    # Calculate angle of bob's position with respect to the cursor's position
+    # --- Calculate angle of Bob's position with respect to the cursor's position
     rel_y = cursor.pos.y - bob.pos.y
     rel_x = cursor.pos.x - bob.pos.x
     radians = math.atan2(rel_y, rel_x)
@@ -123,11 +122,12 @@ while is_running:
 
     screen.fill("black")
 
-    # Draw view cone
+    # --- Draw view cone
     size = VISIBLE_DISTANCE * 2
     viewcone = Image.new("RGBA", (size, size))
     cone_size = calc_conesize(
         normalize(VISIBLE_THRESHOLD, -1, 1), CONE_ALPHA)
+
     # PIL pie slices starts from 3 o'clock, and goes clockwise
     start = degrees - cone_size
     end = degrees + cone_size
@@ -139,28 +139,32 @@ while is_running:
         viewcone.tobytes(), viewcone.size, viewcone.mode)
     viewcone_rect = viewcone_img.get_rect(center=bob.pos)
 
-    # Draw objects
+    # --- Draw other objects
     screen.blit(viewcone_img, viewcone_rect)
     bob.draw(screen)
     alice.draw(screen)
     cursor.draw(screen)
 
-    # Draw texts
-    dot_text = my_font.render(
-        f"Dot: {round(dot_product, 3)}, THRESH: {round(VISIBLE_THRESHOLD, 3)}, a = {CONE_ALPHA}", False, "white")
-    dist_text = my_font.render(
-        f"Distance (Bob-Alice): {round(dist_bob_alice, 3)}", False, "white")
-    instr1_text = my_font.render(f"WASD = move Bob", False, "cyan")
-    instr2_text = my_font.render(
-        f"F1/F2 = +/- threshold", False, "cyan")
+    # --- Draw texts
 
-    alice_text = my_font.render(f"Alice", False, "green")
-    bob_text = my_font.render(f"Bob", False, "red")
+    dot_msg = f"Dot: {round(dot_product, 3)}"
+    thr_msg = f"THRESH: {round(VISIBLE_THRESHOLD, 3)}"
+    alp_msg = f"a = {CONE_ALPHA}"
+    stt_msg = f"{dot_msg}, {thr_msg}, {alp_msg}"
+    dist_msg = f"Distance (Bob-Alice): {round(dist_bob_alice, 3)}"
 
-    title_text = my_font.render(
-        f"Field of vision using Dot Product", False, "green")
+    stat_text = font.render(stt_msg, False, "white")
+    dist_text = font.render(dist_msg, False, "white")
+    instr1_text = font.render(f"WASD = move Bob", False, "cyan")
+    instr2_text = font.render(f"F1/F2 = +/- threshold", False, "cyan")
 
-    screen.blit(dot_text, (300, 300))
+    alice_text = font.render(f"Alice", False, "green")
+    bob_text = font.render(f"Bob", False, "red")
+
+    title_text = font.render(
+        "Field of vision using Dot Product", False, "green")
+
+    screen.blit(stat_text, (300, 300))
     screen.blit(dist_text, (300, 330))
     screen.blit(instr1_text, (300, 400))
     screen.blit(instr2_text, (300, 430))
@@ -169,10 +173,10 @@ while is_running:
     screen.blit(title_text, (0, 0))
 
     if dot_product > VISIBLE_THRESHOLD and dist_bob_alice < VISIBLE_DISTANCE:
-        warn_text = my_font.render("Bob sees Alice !", False, "green")
+        warn_text = font.render("Bob sees Alice !", False, "green")
         screen.blit(warn_text, (300, 500))
     else:
-        warn_text = my_font.render(
+        warn_text = font.render(
             "Bob does not see Alice !", False, "red")
         screen.blit(warn_text, (300, 500))
 

@@ -147,17 +147,17 @@ while is_running:
 
     # Draw texts
     dot_text = my_font.render(
-        f"Dot: {round(dot_product, 3)}, THRESH: {round(VISIBLE_THRESHOLD, 3)}", False, (255, 255, 255))
+        f"Dot: {round(dot_product, 3)}, THRESH: {round(VISIBLE_THRESHOLD, 3)}, a = {CONE_ALPHA}", False, "white")
     dist_text = my_font.render(
-        f"Distance (Bob-Alice): {round(dist_bob_alice, 3)}", False, (255, 255, 255))
-    instr1_text = my_font.render(f"WASD = move Bob", False, (0, 255, 255))
+        f"Distance (Bob-Alice): {round(dist_bob_alice, 3)}", False, "white")
+    instr1_text = my_font.render(f"WASD = move Bob", False, "cyan")
     instr2_text = my_font.render(
-        f"F1/F2 = +/- threshold", False, (0, 255, 255))
+        f"F1/F2 = +/- threshold", False, "cyan")
 
-    alice_text = my_font.render(f"Alice", False, (0, 255, 0))
-    bob_text = my_font.render(f"Bob", False, (255, 0, 0))
+    alice_text = my_font.render(f"Alice", False, "green")
+    bob_text = my_font.render(f"Bob", False, "red")
 
-    title_text = my_font.render(f"Dot Product Demo", False, (0, 255, 0))
+    title_text = my_font.render(f"Dot Product Demo", False, "green")
 
     screen.blit(dot_text, (300, 300))
     screen.blit(dist_text, (300, 330))
@@ -168,11 +168,11 @@ while is_running:
     screen.blit(title_text, (0, 0))
 
     if dot_product > VISIBLE_THRESHOLD and dist_bob_alice < VISIBLE_DISTANCE:
-        warn_text = my_font.render("Bob sees Alice !", False, (0, 255, 0))
+        warn_text = my_font.render("Bob sees Alice !", False, "green")
         screen.blit(warn_text, (300, 500))
     else:
         warn_text = my_font.render(
-            "Bob does not see Alice !", False, (255, 0, 0))
+            "Bob does not see Alice !", False, "red")
         screen.blit(warn_text, (300, 500))
 
     pygame.display.update()

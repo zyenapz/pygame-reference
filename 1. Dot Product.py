@@ -157,7 +157,8 @@ while is_running:
     alice_text = my_font.render(f"Alice", False, "green")
     bob_text = my_font.render(f"Bob", False, "red")
 
-    title_text = my_font.render(f"Dot Product Demo", False, "green")
+    title_text = my_font.render(
+        f"Field of vision using Dot Product", False, "green")
 
     screen.blit(dot_text, (300, 300))
     screen.blit(dist_text, (300, 330))

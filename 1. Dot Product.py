@@ -131,7 +131,7 @@ while is_running:
     start = degrees - cone_size
     end = degrees + cone_size
     ImageDraw.Draw(viewcone).pieslice(
-        (0, 0, size-1, size-1), start, end, fill="blue")
+        (0, 0, size-1, size-1), start, end, fill="gray")
 
     # Convert PIL image to pygame image
     viewcone_img = pygame.image.fromstring(
@@ -152,10 +152,16 @@ while is_running:
     instr1_text = my_font.render(f"WASD = move Bob", False, (0, 255, 255))
     instr2_text = my_font.render(
         f"F1/F2 = +/- threshold", False, (0, 255, 255))
+
+    alice_text = my_font.render(f"Alice", False, (0, 255, 0))
+    bob_text = my_font.render(f"Bob", False, (255, 0, 0))
+
     screen.blit(dot_text, (300, 300))
     screen.blit(dist_text, (300, 330))
     screen.blit(instr1_text, (300, 400))
     screen.blit(instr2_text, (300, 430))
+    screen.blit(alice_text, alice.pos)
+    screen.blit(bob_text, bob.pos)
 
     if dot_product > VISIBLE_THRESHOLD and dist_bob_alice < VISIBLE_DISTANCE:
         warn_text = my_font.render("Bob sees Alice !", False, (0, 255, 0))

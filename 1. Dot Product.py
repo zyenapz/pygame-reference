@@ -171,7 +171,7 @@ while is_running:
     screen.blit(instr2_text, (10, 570))
     screen.blit(alice_text, alice.pos)
     screen.blit(bob_text, bob.pos)
-    screen.blit(title_text, (0, 0))
+    screen.blit(title_text, (10, 10))
 
     if dot_product > VISIBLE_THRESHOLD and dist_bob_alice < VISIBLE_DISTANCE:
         warn_text = font_large.render("Bob sees Alice !", False, "green")

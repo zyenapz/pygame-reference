@@ -14,6 +14,7 @@ is_running = True
 clock = pygame.time.Clock()
 FPS = 60
 font = pygame.font.SysFont('Comic Sans MS', 16)
+font_large = pygame.font.SysFont('Comic Sans MS', 32)
 
 # Actor class ------------------------------------------------
 
@@ -164,21 +165,21 @@ while is_running:
     title_text = font.render(
         "Field of vision using Dot Product", False, "green")
 
-    screen.blit(stat_text, (300, 300))
-    screen.blit(dist_text, (300, 330))
-    screen.blit(instr1_text, (300, 400))
-    screen.blit(instr2_text, (300, 430))
+    screen.blit(stat_text, (10, 480))
+    screen.blit(dist_text, (10, 510))
+    screen.blit(instr1_text, (10, 540))
+    screen.blit(instr2_text, (10, 570))
     screen.blit(alice_text, alice.pos)
     screen.blit(bob_text, bob.pos)
     screen.blit(title_text, (0, 0))
 
     if dot_product > VISIBLE_THRESHOLD and dist_bob_alice < VISIBLE_DISTANCE:
-        warn_text = font.render("Bob sees Alice !", False, "green")
-        screen.blit(warn_text, (300, 500))
+        warn_text = font_large.render("Bob sees Alice !", False, "green")
+        screen.blit(warn_text, (300, 300))
     else:
-        warn_text = font.render(
+        warn_text = font_large.render(
             "Bob does not see Alice !", False, "red")
-        screen.blit(warn_text, (300, 500))
+        screen.blit(warn_text, (300, 300))
 
     pygame.display.update()
 

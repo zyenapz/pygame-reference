@@ -9,6 +9,7 @@ from PIL import Image, ImageDraw
 # Game variables
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
+pygame.display.set_caption("Dot Product Demonstration")
 is_running = True
 clock = pygame.time.Clock()
 FPS = 60
@@ -156,12 +157,15 @@ while is_running:
     alice_text = my_font.render(f"Alice", False, (0, 255, 0))
     bob_text = my_font.render(f"Bob", False, (255, 0, 0))
 
+    title_text = my_font.render(f"Dot Product Demo", False, (0, 255, 0))
+
     screen.blit(dot_text, (300, 300))
     screen.blit(dist_text, (300, 330))
     screen.blit(instr1_text, (300, 400))
     screen.blit(instr2_text, (300, 430))
     screen.blit(alice_text, alice.pos)
     screen.blit(bob_text, bob.pos)
+    screen.blit(title_text, (0, 0))
 
     if dot_product > VISIBLE_THRESHOLD and dist_bob_alice < VISIBLE_DISTANCE:
         warn_text = my_font.render("Bob sees Alice !", False, (0, 255, 0))
